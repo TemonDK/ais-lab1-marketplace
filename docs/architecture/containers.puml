@@ -1,0 +1,66 @@
+@startuml
+!include <C4/C4_Container>
+
+title B2C marketplace - container diagram
+LAYOUT_TOP_DOWN()
+
+Person(buyer, "Покупатель")
+Person(seller, "Продавец")
+System_Ext(psp, "Платежный провайдер")
+System_Ext(carrier, "Служба доставки")
+
+System_Boundary(marketplace, "Маркетплейс") {
+    Container(web, "Веб-приложение", "SPA", "Интерфейс покупателя и продавца")
+    Container(gateway, "API Gateway", "HTTPS", "Маршрутизация и аутентификация")
+
+    Container(catalog, "Catalog Service", "HTTP API", "Карточки и поиск товаров")
+    ContainerDb(catalogDb, "Catalog DB", "PostgreSQL", "Данные каталога")
+    ContainerDb(catalogCache, "Catalog Cache", "Redis", "Кэш популярных карточек; владелец Catalog")
+
+    Container(cart, "Cart Service", "HTTP API", "Текущая корзина покупателя")
+    ContainerDb(cartDb, "Cart DB", "PostgreSQL", "Корзины")
+
+    Container(stock, "Inventory Service", "HTTP API", "Атомарное резервирование по SKU")
+    ContainerDb(stockDb, "Inventory DB", "PostgreSQL", "Остатки и резервы")
+
+    Container(orders, "Ordering Service", "HTTP API", "Состояние заказа и оркестрация")
+    ContainerDb(ordersDb, "Ordering DB", "PostgreSQL", "Заказы и outbox")
+
+    Container(payments, "Payment Service", "HTTP API", "Попытки оплаты и webhook")
+    ContainerDb(paymentsDb, "Payment DB", "PostgreSQL", "Платежи и ключи идемпотентности")
+
+    Container(shipping, "Fulfillment Service", "HTTP API", "Отправления и статусы")
+    ContainerDb(shippingDb, "Fulfillment DB", "PostgreSQL", "Доставка")
+
+    ContainerQueue(bus, "Шина событий", "Apache Kafka", "Асинхронная доставка доменных событий")
+}
+
+Rel(buyer, web, "Работает с каталогом и заказами", "HTTPS")
+Rel(seller, web, "Меняет карточки и остатки", "HTTPS")
+Rel(web, gateway, "Вызывает API", "HTTPS/JSON")
+Rel(gateway, catalog, "Каталог", "HTTPS/REST")
+Rel(gateway, cart, "Корзина", "HTTPS/REST")
+Rel(gateway, stock, "Обновление остатков продавцом", "HTTPS/REST")
+Rel(gateway, orders, "Оформление и статус заказа", "HTTPS/REST")
+Rel(catalog, catalogDb, "Читает и записывает", "SQL")
+Rel(catalog, catalogCache, "Кэширует карточки", "Redis protocol")
+Rel(cart, cartDb, "Читает и записывает", "SQL")
+Rel(stock, stockDb, "Резервирует в транзакции", "SQL")
+Rel(orders, ordersDb, "Меняет состояние заказа", "SQL")
+Rel(payments, paymentsDb, "Хранит попытки оплаты", "SQL")
+Rel(shipping, shippingDb, "Хранит отправления", "SQL")
+Rel(cart, catalog, "Получает описание товара", "HTTPS/REST")
+Rel(orders, cart, "Получает снимок корзины", "HTTPS/REST")
+Rel(orders, catalog, "Проверяет текущие цены", "HTTPS/REST")
+Rel(orders, stock, "Создает/снимает резерв по ключу заказа", "HTTPS/REST")
+Rel(orders, payments, "Инициирует/отменяет попытку оплаты", "HTTPS/REST")
+Rel(payments, psp, "Создает платеж", "HTTPS API")
+Rel(psp, payments, "Сообщает результат", "HTTPS webhook")
+Rel(orders, bus, "OrderPaid (transactional outbox)", "Kafka")
+Rel(payments, bus, "PaymentSucceeded/Failed (outbox)", "Kafka")
+Rel(bus, orders, "PaymentSucceeded/Failed", "Kafka")
+Rel(bus, shipping, "OrderPaid", "Kafka")
+Rel(shipping, carrier, "Создает отправление и получает статусы", "HTTPS API")
+
+SHOW_LEGEND()
+@enduml

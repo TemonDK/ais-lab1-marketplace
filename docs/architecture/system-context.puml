@@ -1,0 +1,20 @@
+@startuml
+!include <C4/C4_Context>
+
+title B2C marketplace - system context
+LAYOUT_LEFT_RIGHT()
+
+Person(buyer, "Покупатель", "Ищет товары, оформляет и отслеживает заказы")
+Person(seller, "Продавец", "Обновляет карточки товаров и остатки")
+System(marketplace, "Маркетплейс", "Каталог, корзина, заказы, остатки, оплата и доставка")
+System_Ext(psp, "Платежный провайдер", "Принимает платежи и отправляет результат")
+System_Ext(carrier, "Служба доставки", "Принимает заявку и возвращает статусы")
+
+Rel(buyer, marketplace, "Выбирает и покупает товары", "HTTPS")
+Rel(seller, marketplace, "Ведет ассортимент и остатки", "HTTPS")
+Rel(marketplace, psp, "Создает платеж", "HTTPS API")
+Rel(psp, marketplace, "Передает результат платежа", "HTTPS webhook")
+Rel(marketplace, carrier, "Создает отправление и запрашивает статусы", "HTTPS API")
+
+SHOW_LEGEND()
+@enduml

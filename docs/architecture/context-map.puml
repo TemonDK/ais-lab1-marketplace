@@ -1,0 +1,62 @@
+@startuml
+
+skinparam componentStyle uml2
+
+component [CatalogContext]
+note right of [CatalogContext]
+Publishes product cards, prices 
+and searchable catalog. 
+end note
+component [CartContext]
+note right of [CartContext]
+Stores the buyer's intended selection 
+before checkout. 
+end note
+component [InventoryContext]
+note right of [InventoryContext]
+Atomically reserves and releases 
+available stock by SKU. 
+end note
+component [OrderingContext]
+note right of [OrderingContext]
+Owns order state and coordinates 
+reservation, payment and fulfillment. 
+
+end note
+component [PaymentContext]
+note right of [PaymentContext]
+Processes payment attempts and 
+translates provider callbacks. 
+
+end note
+component [FulfillmentContext]
+note right of [FulfillmentContext]
+Creates delivery jobs and tracks 
+shipment status. 
+end note
+
+interface "Upstream-Downstream" as CartContext_to_CatalogContext
+[CatalogContext] --> CartContext_to_CatalogContext : OPEN_HOST_SERVICE, PUBLISHED_LANGUAGE
+CartContext_to_CatalogContext <.. [CartContext] : consume
+
+interface "Upstream-Downstream" as OrderingContext_to_CatalogContext
+[CatalogContext] --> OrderingContext_to_CatalogContext : OPEN_HOST_SERVICE, PUBLISHED_LANGUAGE
+OrderingContext_to_CatalogContext <.. [OrderingContext] : use via ANTICORRUPTION_LAYER
+
+interface "Upstream-Downstream" as OrderingContext_to_CartContext
+[CartContext] --> OrderingContext_to_CartContext : OPEN_HOST_SERVICE, PUBLISHED_LANGUAGE
+OrderingContext_to_CartContext <.. [OrderingContext] : use via ANTICORRUPTION_LAYER
+
+interface "Upstream-Downstream" as OrderingContext_to_InventoryContext
+[InventoryContext] --> OrderingContext_to_InventoryContext : OPEN_HOST_SERVICE, PUBLISHED_LANGUAGE
+OrderingContext_to_InventoryContext <.. [OrderingContext] : use via ANTICORRUPTION_LAYER
+
+[OrderingContext]<-->[PaymentContext] : Partnership
+
+interface "Upstream-Downstream" as FulfillmentContext_to_OrderingContext
+[OrderingContext] --> FulfillmentContext_to_OrderingContext : OPEN_HOST_SERVICE, PUBLISHED_LANGUAGE
+FulfillmentContext_to_OrderingContext <.. [FulfillmentContext] : use via ANTICORRUPTION_LAYER
+
+
+
+@enduml
