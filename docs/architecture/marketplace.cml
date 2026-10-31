@@ -1,0 +1,55 @@
+Domain Marketplace {
+    domainVisionStatement = "B2C marketplace with product discovery, checkout and delivery."
+
+    Subdomain CatalogDomain { type = SUPPORTING_DOMAIN }
+    Subdomain CartDomain { type = SUPPORTING_DOMAIN }
+    Subdomain InventoryDomain { type = CORE_DOMAIN }
+    Subdomain OrderingDomain { type = CORE_DOMAIN }
+    Subdomain PaymentDomain { type = SUPPORTING_DOMAIN }
+    Subdomain FulfillmentDomain { type = SUPPORTING_DOMAIN }
+}
+
+ContextMap MarketplaceMap {
+    type = SYSTEM_LANDSCAPE
+    state = TO_BE
+
+    contains CatalogContext, CartContext, InventoryContext
+    contains OrderingContext, PaymentContext, FulfillmentContext
+
+    CatalogContext [U,OHS,PL] -> [D] CartContext
+    CatalogContext [U,OHS,PL] -> [D,ACL] OrderingContext
+    CartContext [U,OHS,PL] -> [D,ACL] OrderingContext
+    InventoryContext [U,OHS,PL] -> [D,ACL] OrderingContext
+    OrderingContext [P] <-> [P] PaymentContext
+    OrderingContext [U,OHS,PL] -> [D,ACL] FulfillmentContext
+}
+
+BoundedContext CatalogContext implements CatalogDomain {
+    type = APPLICATION
+    domainVisionStatement = "Publishes product cards, prices and searchable catalog."
+}
+
+BoundedContext CartContext implements CartDomain {
+    type = APPLICATION
+    domainVisionStatement = "Stores the buyer's intended selection before checkout."
+}
+
+BoundedContext InventoryContext implements InventoryDomain {
+    type = APPLICATION
+    domainVisionStatement = "Atomically reserves and releases available stock by SKU."
+}
+
+BoundedContext OrderingContext implements OrderingDomain {
+    type = APPLICATION
+    domainVisionStatement = "Owns order state and coordinates reservation, payment and fulfillment."
+}
+
+BoundedContext PaymentContext implements PaymentDomain {
+    type = APPLICATION
+    domainVisionStatement = "Processes payment attempts and translates provider callbacks."
+}
+
+BoundedContext FulfillmentContext implements FulfillmentDomain {
+    type = APPLICATION
+    domainVisionStatement = "Creates delivery jobs and tracks shipment status."
+}
