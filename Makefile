@@ -1,7 +1,7 @@
 .PHONY: build-docs lint
 
 build-docs:
-	./scripts/build-docs.sh
+	bash ./scripts/build-docs.sh
 
 lint:
-	./scripts/lint.sh
+	bash ./scripts/lint.sh
