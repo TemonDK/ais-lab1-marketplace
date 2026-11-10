@@ -125,13 +125,13 @@
 
 ## Воспроизведение и проверка
 
-Нужны Java 17+, Graphviz (`dot`), GNU Make и `curl`. На Linux/macOS/WSL2 в корне репозитория:
+Нужны Java 17+, Graphviz (`dot`), Python 3, GNU Make и `curl`. На Linux/macOS/WSL2 в корне репозитория:
 
 ```bash
 make build-docs
 make lint
 ```
 
-`make build-docs` загружает закрепленные версии Context Mapper CLI 6.12.0 и PlantUML 1.2026.9 в локальный каталог `.tools`, проверяет CML, генерирует `docs/architecture/context-map.puml` из него и рендерит три SVG в `evidence`. `make lint` заново валидирует CML, проверяет синтаксис трех PlantUML-файлов и совпадение зафиксированных SVG с результатом сборки. Зависимости загружаются из официальных репозиториев Context Mapper (Maven Central) и PlantUML (GitHub Releases); исполняемые файлы зависимостей в Git не хранятся.
+`make build-docs` загружает закрепленные версии Context Mapper CLI 6.12.0 и PlantUML 1.2026.9 в локальный каталог `.tools`, проверяет CML, генерирует `docs/architecture/context-map.puml` из него и рендерит три SVG в `evidence`. `make lint` заново валидирует CML, проверяет синтаксис трех PlantUML-файлов, сверяет с CML исходный файл карты контекстов и проверяет XML-структуру созданных и сохранённых SVG. Зависимости загружаются из официальных репозиториев Context Mapper (Maven Central) и PlantUML (GitHub Releases); исполняемые файлы зависимостей в Git не хранятся.
 
 **Вывод:** логические границы контекстов заданы по смыслу терминов и правилам согласованности. Контейнерная декомпозиция сохраняет эти границы, изолирует хранилища и позволяет масштабировать чтение каталога независимо от оформления заказа.
