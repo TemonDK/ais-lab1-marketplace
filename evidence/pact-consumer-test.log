@@ -26,16 +26,16 @@
 [INFO] -------------------------------------------------------
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
+[INFO] Running edu.temondk.cart.CartDomainTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.337 s -- in edu.temondk.cart.CartDomainTest
 [INFO] Running edu.temondk.cart.CatalogClientPactTest
-10:32:52.610 [Thread-2] WARN au.com.dius.pact.core.support.Metrics -- 
+10:36:50.630 [Thread-2] WARN au.com.dius.pact.core.support.Metrics -- 
             Please note: we are tracking events anonymously to gather important usage statistics like JVM version
             and operating system. To disable tracking, set the 'pact_do_not_track' system property or environment
             variable to 'true'.
             
-10:32:52.851 [main] INFO au.com.dius.pact.consumer.junit5.PactConsumerTestExt$Companion -- Writing pacts out to default directory
-[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.669 s -- in edu.temondk.cart.CatalogClientPactTest
-[INFO] Running edu.temondk.cart.CartDomainTest
-[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.875 s -- in edu.temondk.cart.CartDomainTest
+10:36:50.880 [main] INFO au.com.dius.pact.consumer.junit5.PactConsumerTestExt$Companion -- Writing pacts out to default directory
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.728 s -- in edu.temondk.cart.CatalogClientPactTest
 [INFO] 
 [INFO] Results:
 [INFO] 
@@ -44,6 +44,6 @@
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  7.265 s
-[INFO] Finished at: 2026-11-20T10:32:54Z
+[INFO] Total time:  7.398 s
+[INFO] Finished at: 2026-11-20T10:36:51Z
 [INFO] ------------------------------------------------------------------------
