@@ -1,0 +1,132 @@
+openapi: 3.1.0
+info:
+  title: Marketplace Catalog API
+  version: 1.0.0
+  description: Контракт Catalog Service для Cart Service и продавца.
+servers:
+  - url: /api/catalog
+security: []
+paths:
+  /products:
+    post:
+      operationId: createProduct
+      summary: Создать карточку товара
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: Карточка создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '422': { $ref: '#/components/responses/Unprocessable' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '500': { $ref: '#/components/responses/InternalError' }
+  /products/{sku}:
+    parameters:
+      - in: path
+        name: sku
+        required: true
+        schema:
+          type: string
+          pattern: '^[A-Z0-9-]{3,32}$'
+    get:
+      operationId: getProduct
+      summary: Получить карточку по SKU для корзины
+      responses:
+        '200':
+          description: Действующая карточка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '500': { $ref: '#/components/responses/InternalError' }
+    put:
+      operationId: updateProduct
+      summary: Обновить существующую карточку
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200':
+          description: Карточка обновлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '422': { $ref: '#/components/responses/Unprocessable' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '500': { $ref: '#/components/responses/InternalError' }
+components:
+  schemas:
+    ProductInput:
+      type: object
+      additionalProperties: false
+      required: [sku, title, price, active]
+      properties:
+        sku:
+          type: string
+          pattern: '^[A-Z0-9-]{3,32}$'
+        title:
+          type: string
+          minLength: 3
+          maxLength: 120
+        price:
+          type: number
+          exclusiveMinimum: 0
+          multipleOf: 0.01
+        active:
+          type: boolean
+    Product:
+      allOf:
+        - $ref: '#/components/schemas/ProductInput'
+    ProblemDetails:
+      type: object
+      additionalProperties: false
+      required: [type, title, status, detail, instance]
+      properties:
+        type: { type: string, format: uri-reference }
+        title: { type: string }
+        status: { type: integer, format: int32 }
+        detail: { type: string }
+        instance: { type: string, format: uri-reference }
+  responses:
+    BadRequest:
+      description: Некорректное тело запроса или параметр
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/ProblemDetails' }
+    NotFound:
+      description: Товар отсутствует
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/ProblemDetails' }
+    Unprocessable:
+      description: Доменный конфликт (дубликат SKU или несовпадение пути и тела)
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/ProblemDetails' }
+    TooManyRequests:
+      description: Лимит шлюза превышен
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/ProblemDetails' }
+    InternalError:
+      description: Внутренняя ошибка
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/ProblemDetails' }
