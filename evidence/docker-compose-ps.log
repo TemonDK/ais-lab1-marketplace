@@ -1,0 +1,7 @@
+NAME                                     IMAGE                                  COMMAND                  SERVICE           CREATED          STATUS                    PORTS
+ais-lab1-marketplace-api-gateway-1       ais-lab1-marketplace-api-gateway       "java -jar /app/app.…"   api-gateway       29 seconds ago   Up 11 seconds (healthy)   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+ais-lab1-marketplace-cart-db-1           postgres:16-alpine                     "docker-entrypoint.s…"   cart-db           29 seconds ago   Up 28 seconds (healthy)   5432/tcp
+ais-lab1-marketplace-cart-service-1      ais-lab1-marketplace-cart-service      "java -jar /app/app.…"   cart-service      29 seconds ago   Up 16 seconds (healthy)   8082/tcp
+ais-lab1-marketplace-catalog-db-1        postgres:16-alpine                     "docker-entrypoint.s…"   catalog-db        29 seconds ago   Up 28 seconds (healthy)   5432/tcp
+ais-lab1-marketplace-catalog-service-1   ais-lab1-marketplace-catalog-service   "java -jar /app/app.…"   catalog-service   29 seconds ago   Up 22 seconds (healthy)   8081/tcp
+ais-lab1-marketplace-redis-1             redis:7-alpine                         "docker-entrypoint.s…"   redis             29 seconds ago   Up 28 seconds (healthy)   6379/tcp
