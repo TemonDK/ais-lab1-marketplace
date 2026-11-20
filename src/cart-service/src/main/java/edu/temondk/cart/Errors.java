@@ -8,6 +8,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 @RestControllerAdvice public class Errors {
   private static final Logger log=LoggerFactory.getLogger(Errors.class);
   private ProblemDetail p(HttpStatus s,String detail,HttpServletRequest req){
@@ -20,6 +21,8 @@ import org.springframework.web.server.ResponseStatusException;
   @ExceptionHandler(CatalogClient.CatalogUnavailable.class) @ResponseStatus(HttpStatus.BAD_GATEWAY)
   public ProblemDetail unavailable(Exception ex,HttpServletRequest req){return p(HttpStatus.BAD_GATEWAY,"Каталог недоступен",req);}
   @ExceptionHandler(ResponseStatusException.class) public ResponseEntity<ProblemDetail> domain(ResponseStatusException ex,HttpServletRequest req){HttpStatus s=HttpStatus.valueOf(ex.getStatusCode().value());return ResponseEntity.status(s).contentType(MediaType.parseMediaType("application/problem+json")).body(p(s,ex.getReason(),req));}
+  @ExceptionHandler(NoResourceFoundException.class) @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ProblemDetail unknownRoute(Exception ex,HttpServletRequest req){return p(HttpStatus.NOT_FOUND,"Маршрут не найден",req);}
   @ExceptionHandler(Exception.class) @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ProblemDetail server(Exception ex,HttpServletRequest req){log.error("Unexpected error",ex);return p(HttpStatus.INTERNAL_SERVER_ERROR,"Внутренняя ошибка корзины",req);}
 }

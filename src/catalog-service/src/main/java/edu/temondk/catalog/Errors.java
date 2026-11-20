@@ -8,6 +8,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 @RestControllerAdvice public class Errors {
   private static final Logger log=LoggerFactory.getLogger(Errors.class);
   private ProblemDetail problem(HttpStatus status,String detail,HttpServletRequest request) {
@@ -23,6 +24,8 @@ import org.springframework.web.server.ResponseStatusException;
     return ResponseEntity.status(status).contentType(MediaType.parseMediaType("application/problem+json"))
       .body(problem(status,ex.getReason(),req));
   }
+  @ExceptionHandler(NoResourceFoundException.class) @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ProblemDetail unknownRoute(Exception ex,HttpServletRequest req){return problem(HttpStatus.NOT_FOUND,"Маршрут не найден",req);}
   @ExceptionHandler(Exception.class) @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ProblemDetail server(Exception ex,HttpServletRequest req) {log.error("Unexpected error",ex);return problem(HttpStatus.INTERNAL_SERVER_ERROR,"Внутренняя ошибка каталога",req);}
 }

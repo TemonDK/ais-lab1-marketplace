@@ -26,16 +26,16 @@ check 200 'Чтение товара' "$base/api/catalog/products/$sku"
 check 200 'Обновление товара' -X PUT -H 'Content-Type: application/json' -d "$product" "$base/api/catalog/products/$sku"
 check 404 'Неизвестный товар' "$base/api/catalog/products/SKU-UNKNOWN"
 check 400 'Невалидный товар' -H 'Content-Type: application/json' -d '{"sku":"BAD","title":"x","price":-1,"active":true}' "$base/api/catalog/products"
-check 201 'Корзина вызывает каталог' -H 'Content-Type: application/json' -d "{\"sku\":\"$sku\",\"quantity\":2}" "$base/api/cart/$buyer/items"
-check 200 'Чтение корзины' "$base/api/cart/$buyer"
+check 201 'Корзина вызывает каталог' -H 'Content-Type: application/json' -d "{\"sku\":\"$sku\",\"quantity\":2}" "$base/api/cart/carts/$buyer/items"
+check 200 'Чтение корзины' "$base/api/cart/carts/$buyer"
 python3 - "$files/body" "$sku" <<'PY'
 import json,sys
 c=json.load(open(sys.argv[1]));assert c['items'][0]['sku']==sys.argv[2];assert c['items'][0]['quantity']==2;assert float(c['total'])==251
 PY
-check 400 'Неверное количество' -H 'Content-Type: application/json' -d "{\"sku\":\"$sku\",\"quantity\":0}" "$base/api/cart/$buyer/items"
-check 404 'Отсутствующий товар в корзине' -H 'Content-Type: application/json' -d '{"sku":"SKU-MISSING","quantity":1}' "$base/api/cart/$buyer/items"
-check 204 'Очистка корзины' -X DELETE "$base/api/cart/$buyer"
-check 200 'Корзина после очистки' "$base/api/cart/$buyer"
+check 400 'Неверное количество' -H 'Content-Type: application/json' -d "{\"sku\":\"$sku\",\"quantity\":0}" "$base/api/cart/carts/$buyer/items"
+check 404 'Отсутствующий товар в корзине' -H 'Content-Type: application/json' -d '{"sku":"SKU-MISSING","quantity":1}' "$base/api/cart/carts/$buyer/items"
+check 204 'Очистка корзины' -X DELETE "$base/api/cart/carts/$buyer"
+check 200 'Корзина после очистки' "$base/api/cart/carts/$buyer"
 python3 - "$files/body" <<'PY'
 import json,sys
 assert json.load(open(sys.argv[1]))['items']==[]
