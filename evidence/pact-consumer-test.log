@@ -14,11 +14,11 @@
 [INFO] Compiling 4 source files with javac [debug parameters release 21] to target/classes
 [INFO] 
 [INFO] --- resources:3.3.1:testResources (default-testResources) @ cart-service ---
-[INFO] skip non existing resourceDirectory /home/runner/work/ais-lab1-marketplace/ais-lab1-marketplace/src/cart-service/src/test/resources
+[INFO] Copying 1 resource from src/test/resources to target/test-classes
 [INFO] 
 [INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ cart-service ---
 [INFO] Recompiling the module because of changed dependency.
-[INFO] Compiling 1 source file with javac [debug parameters release 21] to target/test-classes
+[INFO] Compiling 2 source files with javac [debug parameters release 21] to target/test-classes
 [INFO] 
 [INFO] --- surefire:3.5.4:test (default-test) @ cart-service ---
 [INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
@@ -27,21 +27,23 @@
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
 [INFO] Running edu.temondk.cart.CatalogClientPactTest
-10:25:26.459 [Thread-2] WARN au.com.dius.pact.core.support.Metrics -- 
+10:32:52.610 [Thread-2] WARN au.com.dius.pact.core.support.Metrics -- 
             Please note: we are tracking events anonymously to gather important usage statistics like JVM version
             and operating system. To disable tracking, set the 'pact_do_not_track' system property or environment
             variable to 'true'.
             
-10:25:26.750 [main] INFO au.com.dius.pact.consumer.junit5.PactConsumerTestExt$Companion -- Writing pacts out to default directory
-[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.703 s -- in edu.temondk.cart.CatalogClientPactTest
+10:32:52.851 [main] INFO au.com.dius.pact.consumer.junit5.PactConsumerTestExt$Companion -- Writing pacts out to default directory
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.669 s -- in edu.temondk.cart.CatalogClientPactTest
+[INFO] Running edu.temondk.cart.CartDomainTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.875 s -- in edu.temondk.cart.CartDomainTest
 [INFO] 
 [INFO] Results:
 [INFO] 
-[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
 [INFO] 
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  5.318 s
-[INFO] Finished at: 2026-11-20T10:25:27Z
+[INFO] Total time:  7.265 s
+[INFO] Finished at: 2026-11-20T10:32:54Z
 [INFO] ------------------------------------------------------------------------
