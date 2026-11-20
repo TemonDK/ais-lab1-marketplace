@@ -2,6 +2,8 @@ name: Lab 2 integration and evidence
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - README.md
   workflow_dispatch:
 permissions:
   contents: write
@@ -60,14 +62,18 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add evidence/*.log tests/pact/pacts/*.json
-          git commit -m 'test(lab2): проверенные логи и Pact [skip ci]'
-          git push origin HEAD:main
+          if ! git diff --cached --quiet; then
+            git commit -m 'test(lab2): проверенные логи и Pact [skip ci]'
+            git push origin HEAD:main
+          fi
           if ! git rev-parse lab1-complete >/dev/null 2>&1; then
             git tag -a lab1-complete d1b0b3d5d0c9ebf0f8608f6c81e035da3300dccb -m 'Лабораторная работа №1: макроархитектура'
             git push origin lab1-complete
           fi
-          git tag -a lab2-complete -m 'Лабораторная работа №2: микросервисы, API Gateway, Pact'
-          git push origin lab2-complete
+          if ! git rev-parse lab2-complete >/dev/null 2>&1; then
+            git tag -a lab2-complete -m 'Лабораторная работа №2: микросервисы, API Gateway, Pact'
+            git push origin lab2-complete
+          fi
       - name: Logs when integration fails
         if: failure()
         run: docker compose logs --tail=150 || true
