@@ -22,6 +22,8 @@ jobs:
           --health-interval 5s --health-timeout 3s --health-retries 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -60,6 +62,10 @@ jobs:
           git add evidence/*.log tests/pact/pacts/*.json
           git commit -m 'test(lab2): проверенные логи и Pact [skip ci]'
           git push origin HEAD:main
+          if ! git rev-parse lab1-complete >/dev/null 2>&1; then
+            git tag -a lab1-complete d1b0b3d5d0c9ebf0f8608f6c81e035da3300dccb -m 'Лабораторная работа №1: макроархитектура'
+            git push origin lab1-complete
+          fi
           git tag -a lab2-complete -m 'Лабораторная работа №2: микросервисы, API Gateway, Pact'
           git push origin lab2-complete
       - name: Logs when integration fails
