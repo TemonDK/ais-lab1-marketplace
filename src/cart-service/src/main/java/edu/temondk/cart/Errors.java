@@ -18,6 +18,8 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
   @ResponseStatus(HttpStatus.BAD_REQUEST) public ProblemDetail invalid(Exception ex,HttpServletRequest req){return p(HttpStatus.BAD_REQUEST,"Некорректный запрос к корзине",req);}
   @ExceptionHandler(CatalogClient.CatalogMissing.class) @ResponseStatus(HttpStatus.NOT_FOUND)
   public ProblemDetail missing(Exception ex,HttpServletRequest req){return p(HttpStatus.NOT_FOUND,"Товар не найден в каталоге",req);}
+  @ExceptionHandler(CatalogClient.CatalogInactive.class) @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+  public ProblemDetail inactive(Exception ex,HttpServletRequest req){return p(HttpStatus.UNPROCESSABLE_ENTITY,"Товар снят с продажи",req);}
   @ExceptionHandler(CatalogClient.CatalogUnavailable.class) @ResponseStatus(HttpStatus.BAD_GATEWAY)
   public ProblemDetail unavailable(Exception ex,HttpServletRequest req){return p(HttpStatus.BAD_GATEWAY,"Каталог недоступен",req);}
   @ExceptionHandler(ResponseStatusException.class) public ResponseEntity<ProblemDetail> domain(ResponseStatusException ex,HttpServletRequest req){HttpStatus s=HttpStatus.valueOf(ex.getStatusCode().value());return ResponseEntity.status(s).contentType(MediaType.parseMediaType("application/problem+json")).body(p(s,ex.getReason(),req));}

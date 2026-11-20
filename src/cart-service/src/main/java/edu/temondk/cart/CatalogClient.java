@@ -11,8 +11,10 @@ import org.springframework.web.client.*;
   public Product get(String sku) {
     try {return client.get().uri("/products/{sku}",sku).retrieve().body(Product.class);}
     catch(HttpClientErrorException.NotFound ex){throw new CatalogMissing();}
+    catch(HttpClientErrorException.UnprocessableEntity ex){throw new CatalogInactive();}
     catch(ResourceAccessException | HttpServerErrorException ex){throw new CatalogUnavailable();}
   }
   static class CatalogMissing extends RuntimeException {}
+  static class CatalogInactive extends RuntimeException {}
   static class CatalogUnavailable extends RuntimeException {}
 }

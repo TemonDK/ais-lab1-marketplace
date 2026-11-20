@@ -21,6 +21,10 @@ public class CatalogPactVerificationTest {
     db.update("insert into products(sku,title,price,active) values (?,?,?,?) on conflict(sku) do update set title=excluded.title,price=excluded.price,active=excluded.active",
       "SKU-123","Учебный товар",new java.math.BigDecimal("125.50"),true);
   }
+  @State("product SKU-OFF is inactive") void seedInactive(){
+    db.update("insert into products(sku,title,price,active) values (?,?,?,?) on conflict(sku) do update set title=excluded.title,price=excluded.price,active=excluded.active",
+      "SKU-OFF","Неактивный товар",new java.math.BigDecimal("25.00"),false);
+  }
   @TestTemplate @ExtendWith(PactVerificationSpring6Provider.class)
   void verify(PactVerificationContext context){context.verifyInteraction();}
 }

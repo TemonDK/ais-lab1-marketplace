@@ -26,6 +26,8 @@ check 200 'Чтение товара' "$base/api/catalog/products/$sku"
 check 200 'Обновление товара' -X PUT -H 'Content-Type: application/json' -d "$product" "$base/api/catalog/products/$sku"
 check 404 'Неизвестный товар' "$base/api/catalog/products/SKU-UNKNOWN"
 check 400 'Невалидный товар' -H 'Content-Type: application/json' -d '{"sku":"BAD","title":"x","price":-1,"active":true}' "$base/api/catalog/products"
+check 400 'Отсутствует обязательное поле' -H 'Content-Type: application/json' -d '{"sku":"SKU-NEW","title":"Товар","price":15.00}' "$base/api/catalog/products"
+check 400 'Неверный формат SKU' "$base/api/catalog/products/bad"
 check 201 'Корзина вызывает каталог' -H 'Content-Type: application/json' -d "{\"sku\":\"$sku\",\"quantity\":2}" "$base/api/cart/carts/$buyer/items"
 check 200 'Чтение корзины' "$base/api/cart/carts/$buyer"
 python3 - "$files/body" "$sku" <<'PY'
@@ -34,10 +36,18 @@ c=json.load(open(sys.argv[1]));assert c['items'][0]['sku']==sys.argv[2];assert c
 PY
 check 400 'Неверное количество' -H 'Content-Type: application/json' -d "{\"sku\":\"$sku\",\"quantity\":0}" "$base/api/cart/carts/$buyer/items"
 check 404 'Отсутствующий товар в корзине' -H 'Content-Type: application/json' -d '{"sku":"SKU-MISSING","quantity":1}' "$base/api/cart/carts/$buyer/items"
+check 200 'Товар снят с продажи' -X PUT -H 'Content-Type: application/json' -d "{\"sku\":\"$sku\",\"title\":\"Товар для проверки\",\"price\":125.50,\"active\":false}" "$base/api/catalog/products/$sku"
+check 422 'Неактивный товар запрещён в корзине' -H 'Content-Type: application/json' -d "{\"sku\":\"$sku\",\"quantity\":1}" "$base/api/cart/carts/$buyer/items"
 check 204 'Очистка корзины' -X DELETE "$base/api/cart/carts/$buyer"
 check 200 'Корзина после очистки' "$base/api/cart/carts/$buyer"
 python3 - "$files/body" <<'PY'
 import json,sys
 assert json.load(open(sys.argv[1]))['items']==[]
 PY
+curl -sS -f -L --max-time 20 "$base/docs" -o "$files/swagger.html"
+grep -qi 'Swagger UI' "$files/swagger.html"
+curl -sS -f --max-time 20 "$base/swagger-ui/swagger-initializer.js" -o "$files/swagger.js"
+curl -sS -f --max-time 20 "$base/openapi.yaml" -o "$files/openapi.yaml"
+grep -q '^openapi: 3.1.0' "$files/openapi.yaml"
+echo 'Swagger UI и контракт OpenAPI доступны через API Gateway.'
 echo 'Все проверки API пройдены.'

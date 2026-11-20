@@ -38,7 +38,7 @@ paths:
           pattern: '^[A-Z0-9-]{3,32}$'
     get:
       operationId: getProduct
-      summary: Получить карточку по SKU для корзины
+      summary: Получить активную карточку по SKU для корзины
       responses:
         '200':
           description: Действующая карточка
@@ -48,6 +48,7 @@ paths:
                 $ref: '#/components/schemas/Product'
         '400': { $ref: '#/components/responses/BadRequest' }
         '404': { $ref: '#/components/responses/NotFound' }
+        '422': { $ref: '#/components/responses/Unprocessable' }
         '429': { $ref: '#/components/responses/TooManyRequests' }
         '500': { $ref: '#/components/responses/InternalError' }
     put:
@@ -116,7 +117,7 @@ components:
         application/problem+json:
           schema: { $ref: '#/components/schemas/ProblemDetails' }
     Unprocessable:
-      description: Доменный конфликт (дубликат SKU или несовпадение пути и тела)
+      description: Доменный отказ (дубликат SKU, неактивный товар или несовпадение пути и тела)
       content:
         application/problem+json:
           schema: { $ref: '#/components/schemas/ProblemDetails' }
