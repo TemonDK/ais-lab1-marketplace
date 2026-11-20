@@ -27,8 +27,8 @@
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
 [INFO] Running edu.temondk.catalog.CatalogPactVerificationTest
-10:10:12.539 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [edu.temondk.catalog.CatalogPactVerificationTest]: CatalogPactVerificationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-10:10:12.672 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration edu.temondk.catalog.CatalogApplication for test class edu.temondk.catalog.CatalogPactVerificationTest
+10:25:32.426 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [edu.temondk.catalog.CatalogPactVerificationTest]: CatalogPactVerificationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+10:25:32.548 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration edu.temondk.catalog.CatalogApplication for test class edu.temondk.catalog.CatalogPactVerificationTest
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -39,46 +39,58 @@
 
  :: Spring Boot ::               (v3.4.13)
 
-2026-11-20T10:10:13.318Z  INFO 3127 --- [           main] e.t.catalog.CatalogPactVerificationTest  : Starting CatalogPactVerificationTest using Java 21.0.13 with PID 3127 (started by runner in /home/runner/work/ais-lab1-marketplace/ais-lab1-marketplace/src/catalog-service)
-2026-11-20T10:10:13.319Z  INFO 3127 --- [           main] e.t.catalog.CatalogPactVerificationTest  : No active profile set, falling back to 1 default profile: "default"
-2026-11-20T10:10:15.522Z  INFO 3127 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
-2026-11-20T10:10:15.544Z  INFO 3127 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-11-20T10:10:15.545Z  INFO 3127 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.50]
-2026-11-20T10:10:15.604Z  INFO 3127 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2026-11-20T10:10:15.606Z  INFO 3127 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1935 ms
-2026-11-20T10:10:15.807Z  INFO 3127 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-11-20T10:10:16.016Z  INFO 3127 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@282c5075
-2026-11-20T10:10:16.017Z  INFO 3127 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-11-20T10:10:16.897Z  INFO 3127 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
-2026-11-20T10:10:17.174Z  INFO 3127 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 37291 (http) with context path '/'
-2026-11-20T10:10:17.191Z  INFO 3127 --- [           main] e.t.catalog.CatalogPactVerificationTest  : Started CatalogPactVerificationTest in 4.36 seconds (process running for 5.349)
-2026-11-20T10:10:18.544Z  INFO 3127 --- [           main] rificationStateChangeExtension$Companion : Invoking state change method 'product SKU-123 exists':SETUP
+2026-11-20T10:25:32.982Z  INFO 3218 --- [           main] e.t.catalog.CatalogPactVerificationTest  : Starting CatalogPactVerificationTest using Java 21.0.13 with PID 3218 (started by runner in /home/runner/work/ais-lab1-marketplace/ais-lab1-marketplace/src/catalog-service)
+2026-11-20T10:25:32.983Z  INFO 3218 --- [           main] e.t.catalog.CatalogPactVerificationTest  : No active profile set, falling back to 1 default profile: "default"
+2026-11-20T10:25:34.885Z  INFO 3218 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
+2026-11-20T10:25:34.899Z  INFO 3218 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-11-20T10:25:34.900Z  INFO 3218 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.50]
+2026-11-20T10:25:34.953Z  INFO 3218 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-11-20T10:25:34.954Z  INFO 3218 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1742 ms
+2026-11-20T10:25:35.158Z  INFO 3218 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-11-20T10:25:35.344Z  INFO 3218 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3f40568e
+2026-11-20T10:25:35.346Z  INFO 3218 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-11-20T10:25:36.179Z  INFO 3218 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-11-20T10:25:36.518Z  INFO 3218 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 37437 (http) with context path '/'
+2026-11-20T10:25:36.534Z  INFO 3218 --- [           main] e.t.catalog.CatalogPactVerificationTest  : Started CatalogPactVerificationTest in 3.865 seconds (process running for 4.762)
+2026-11-20T10:25:37.792Z  INFO 3218 --- [           main] rificationStateChangeExtension$Companion : Invoking state change method 'product SKU-123 exists':SETUP
 
 Verifying a pact between cart-service and catalog-service
   [Using File ../../tests/pact/pacts/cart-service-catalog-service.json]
   Given product SKU-123 exists
   Cart looks up product SKU-123
-2026-11-20T10:10:18.660Z  WARN 3127 --- [       Thread-3] au.com.dius.pact.core.support.Metrics    : 
+2026-11-20T10:25:37.923Z  WARN 3218 --- [       Thread-3] au.com.dius.pact.core.support.Metrics    : 
             Please note: we are tracking events anonymously to gather important usage statistics like JVM version
             and operating system. To disable tracking, set the 'pact_do_not_track' system property or environment
             variable to 'true'.
             
-2026-11-20T10:10:18.756Z  INFO 3127 --- [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-11-20T10:10:18.757Z  INFO 3127 --- [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2026-11-20T10:10:18.758Z  INFO 3127 --- [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-11-20T10:25:37.994Z  INFO 3218 --- [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-11-20T10:25:37.994Z  INFO 3218 --- [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-11-20T10:25:37.996Z  INFO 3218 --- [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
     returns a response which
       has status code 200 (OK)
       has a matching body (OK)
-2026-11-20T10:10:18.965Z  WARN 3127 --- [           main] a.c.d.p.p.DefaultTestResultAccumulator   : Skipping publishing of verification results as it has been disabled (pact.verifier.publishResults is not 'true')
-[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.602 s -- in edu.temondk.catalog.CatalogPactVerificationTest
+2026-11-20T10:25:38.207Z  WARN 3218 --- [           main] a.c.d.p.p.DefaultTestResultAccumulator   : Not all of the 2 were verified. The following were missing:
+2026-11-20T10:25:38.207Z  WARN 3218 --- [           main] a.c.d.p.p.DefaultTestResultAccumulator   :     Cart checks inactive product SKU-OFF
+2026-11-20T10:25:38.243Z  INFO 3218 --- [           main] rificationStateChangeExtension$Companion : Invoking state change method 'product SKU-OFF is inactive':SETUP
+
+Verifying a pact between cart-service and catalog-service
+  [Using File ../../tests/pact/pacts/cart-service-catalog-service.json]
+  Given product SKU-OFF is inactive
+  Cart checks inactive product SKU-OFF
+    returns a response which
+      has status code 422 (OK)
+      has a matching body (OK)
+2026-11-20T10:25:38.278Z  WARN 3218 --- [           main] a.c.d.p.p.DefaultTestResultAccumulator   : Skipping publishing of verification results as it has been disabled (pact.verifier.publishResults is not 'true')
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.996 s -- in edu.temondk.catalog.CatalogPactVerificationTest
+2026-11-20T10:25:38.373Z  INFO 3218 --- [ionShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
 [INFO] 
 [INFO] Results:
 [INFO] 
-[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
 [INFO] 
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  10.376 s
-[INFO] Finished at: 2026-11-20T10:10:19Z
+[INFO] Total time:  10.245 s
+[INFO] Finished at: 2026-11-20T10:25:38Z
 [INFO] ------------------------------------------------------------------------
