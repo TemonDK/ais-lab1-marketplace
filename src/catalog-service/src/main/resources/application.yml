@@ -1,0 +1,22 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/catalog}
+    username: ${DB_USER:marketplace}
+    password: ${DB_PASSWORD:marketplace}
+  sql:
+    init:
+      mode: always
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+springdoc:
+  swagger-ui:
+    path: /docs
+    url: /openapi.yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

@@ -1,0 +1,42 @@
+server:
+  port: 8080
+spring:
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+  cloud:
+    gateway:
+      routes:
+        - id: catalog-docs
+          uri: ${CATALOG_URL:http://localhost:8081}
+          predicates:
+            - Path=/docs,/swagger-ui/**,/v3/api-docs/**,/openapi.yaml
+        - id: catalog
+          uri: ${CATALOG_URL:http://localhost:8081}
+          predicates:
+            - Path=/api/catalog/**
+          filters:
+            - StripPrefix=2
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@ipKeyResolver}'
+                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.burstCapacity: 5
+                redis-rate-limiter.requestedTokens: 1
+        - id: cart
+          uri: ${CART_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/cart/**
+          filters:
+            - StripPrefix=2
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@ipKeyResolver}'
+                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.burstCapacity: 5
+                redis-rate-limiter.requestedTokens: 1
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

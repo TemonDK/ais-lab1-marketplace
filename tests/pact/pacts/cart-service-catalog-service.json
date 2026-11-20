@@ -1,0 +1,42 @@
+{
+  "consumer": {
+    "name": "cart-service"
+  },
+  "interactions": [
+    {
+      "description": "Cart looks up product SKU-123",
+      "providerStates": [
+        {
+          "name": "product SKU-123 exists"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/products/SKU-123"
+      },
+      "response": {
+        "body": {
+          "active": true,
+          "price": 125.50,
+          "sku": "SKU-123",
+          "title": "\u0423\u0447\u0435\u0431\u043D\u044B\u0439 \u0442\u043E\u0432\u0430\u0440"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
+      }
+    }
+  ],
+  "metadata": {
+    "pact-jvm": {
+      "version": "4.6.17"
+    },
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  },
+  "provider": {
+    "name": "catalog-service"
+  }
+}

@@ -21,7 +21,7 @@ ContextMap MarketplaceMap {
     CartContext [U,OHS,PL] -> [D,ACL] OrderingContext
     InventoryContext [U,OHS,PL] -> [D,ACL] OrderingContext
     OrderingContext [P] <-> [P] PaymentContext
-    OrderingContext [U,OHS,PL] -> [D,ACL] FulfillmentContext
+    OrderingContext [P] <-> [P] FulfillmentContext
 }
 
 BoundedContext CatalogContext implements CatalogDomain {

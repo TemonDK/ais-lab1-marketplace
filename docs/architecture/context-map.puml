@@ -53,9 +53,7 @@ OrderingContext_to_InventoryContext <.. [OrderingContext] : use via ANTICORRUPTI
 
 [OrderingContext]<-->[PaymentContext] : Partnership
 
-interface "Upstream-Downstream" as FulfillmentContext_to_OrderingContext
-[OrderingContext] --> FulfillmentContext_to_OrderingContext : OPEN_HOST_SERVICE, PUBLISHED_LANGUAGE
-FulfillmentContext_to_OrderingContext <.. [FulfillmentContext] : use via ANTICORRUPTION_LAYER
+[OrderingContext]<-->[FulfillmentContext] : Partnership
 
 
 

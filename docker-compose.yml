@@ -1,0 +1,78 @@
+services:
+  catalog-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: catalog
+      POSTGRES_USER: marketplace
+      POSTGRES_PASSWORD: marketplace
+    volumes:
+      - catalog-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U marketplace -d catalog"]
+      interval: 5s
+      retries: 20
+  cart-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: cart
+      POSTGRES_USER: marketplace
+      POSTGRES_PASSWORD: marketplace
+    volumes:
+      - cart-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U marketplace -d cart"]
+      interval: 5s
+      retries: 20
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 20
+  catalog-service:
+    build:
+      context: .
+      dockerfile: src/catalog-service/Dockerfile
+    environment:
+      DB_URL: jdbc:postgresql://catalog-db:5432/catalog
+    depends_on:
+      catalog-db: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8081; printf \"GET /actuator/health HTTP/1.0\\r\\n\\r\\n\" >&3; head -n 1 <&3 | grep -q 200'"]
+      interval: 5s
+      retries: 30
+  cart-service:
+    build:
+      context: .
+      dockerfile: src/cart-service/Dockerfile
+    environment:
+      DB_URL: jdbc:postgresql://cart-db:5432/cart
+      CATALOG_URL: http://catalog-service:8081
+    depends_on:
+      cart-db: { condition: service_healthy }
+      catalog-service: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8082; printf \"GET /actuator/health HTTP/1.0\\r\\n\\r\\n\" >&3; head -n 1 <&3 | grep -q 200'"]
+      interval: 5s
+      retries: 30
+  api-gateway:
+    build:
+      context: .
+      dockerfile: src/api-gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      CATALOG_URL: http://catalog-service:8081
+      CART_URL: http://cart-service:8082
+      REDIS_HOST: redis
+    depends_on:
+      redis: { condition: service_healthy }
+      catalog-service: { condition: service_healthy }
+      cart-service: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8080; printf \"GET /actuator/health HTTP/1.0\\r\\n\\r\\n\" >&3; head -n 1 <&3 | grep -q 200'"]
+      interval: 5s
+      retries: 30
+volumes:
+  catalog-data:
+  cart-data:

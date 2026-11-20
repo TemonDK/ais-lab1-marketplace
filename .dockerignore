@@ -1,0 +1,9 @@
+.git
+.tools
+**/target
+**/.gradle
+**/build
+upload
+lab1-check
+lab1-fix
+lab1-final-verify
