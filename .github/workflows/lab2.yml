@@ -35,13 +35,13 @@ jobs:
         run: |
           mkdir -p evidence tests/pact/pacts
           set -o pipefail
-          mvn -B -ntp -pl src/cart-service test -Dtest=CatalogClientPactTest | tee evidence/pact-consumer-test.log
+          mvn -B -ntp -pl src/cart-service test | tee evidence/pact-consumer-test.log
       - name: Verify real provider against generated Pact
         env:
           DB_URL: jdbc:postgresql://localhost:5433/catalog
         run: |
           set -o pipefail
-          mvn -B -ntp -pl src/catalog-service test -Dtest=CatalogPactVerificationTest | tee evidence/pact-provider-verification.log
+          mvn -B -ntp -pl src/catalog-service test | tee evidence/pact-provider-verification.log
       - name: Start Docker Compose
         run: |
           docker compose up -d --build
@@ -73,6 +73,11 @@ jobs:
           if ! git rev-parse lab2-complete >/dev/null 2>&1; then
             git tag -a lab2-complete -m 'Лабораторная работа №2: микросервисы, API Gateway, Pact'
             git push origin lab2-complete
+          elif [ "$(git rev-parse 'lab2-complete^{commit}')" = '39b515ddec636db6269bae60ab13bcedddc57fad' ]; then
+            # The first lab2 tag predates the Pact 422 and API checks. Replace that exact tag once.
+            old_tag_ref="$(git rev-parse refs/tags/lab2-complete)"
+            git tag -fa lab2-complete -m 'Лабораторная работа №2: итоговая проверенная версия'
+            git push --force-with-lease="refs/tags/lab2-complete:$old_tag_ref" origin refs/tags/lab2-complete
           fi
       - name: Logs when integration fails
         if: failure()
